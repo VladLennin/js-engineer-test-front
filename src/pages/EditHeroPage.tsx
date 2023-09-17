@@ -15,7 +15,6 @@ const EditHeroPage = () => {
     const [hero, setHero] = useState<Hero>(
         {} as Hero
     )
-    const [chosenFiles64, setChosenFiles64] = useState<any[]>([])
     const [chosenFiles, setChosenFiles] = useState<any[]>([])
 
     const {id} = useParams()
@@ -51,10 +50,9 @@ const EditHeroPage = () => {
     const handleFileInputChange = (e: any) => {
         const id = uuid()
 
-        setChosenFiles([...chosenFiles, {file: e.target.files[0], id: id}])
         getBase64(e.target.files[0])
             .then(result => {
-                setChosenFiles64([...chosenFiles64, {value: String(result), id: id}]);
+                setChosenFiles([...chosenFiles, {value: String(result), file: e.target.files[0], id: id}]);
             })
             .catch(err => {
                 console.log(err);
@@ -191,10 +189,9 @@ const EditHeroPage = () => {
                 </div>
 
                 <div className={"col-span-2 grid grid-cols-4 gap-5 mt-3"}>
-                    {chosenFiles64?.map(item => (
+                    {chosenFiles?.map(item => (
                         <div className={'relative'}>
                             <button onClick={() => {
-                                setChosenFiles64(chosenFiles64.filter(i => i.id !== item.id))
                                 setChosenFiles(chosenFiles.filter(i => i.id !== item.id))
                             }} className={'text-red-500 absolute '}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
